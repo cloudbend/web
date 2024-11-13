@@ -1,0 +1,21 @@
+{
+    "name": "Web",
+    "image": "mcr.microsoft.com/devcontainers/base:bullseye",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "github.copilot",
+                "github.copilot-chat",
+                "esbenp.prettier-vscode",
+                "redhat.vscode-yaml",
+                "github.vscode-github-actions"
+            ]
+        }
+    },
+    "postCreateCommand": "scripts/setup.sh",
+    "features": {
+        "ghcr.io/devcontainers/features/aws-cli:1": {},
+        "ghcr.io/devcontainers/features/python:1": {},
+        "ghcr.io/devcontainers/features/node:1": {}
+    }
+}
