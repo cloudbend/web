@@ -5,7 +5,7 @@ IAC_DIR=cdk
 
 # app dependencies
 cd $APP_DIR
-npm i
+npm i --force
 cd -
 
 # iac dependencies
