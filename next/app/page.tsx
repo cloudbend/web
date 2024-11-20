@@ -1,15 +1,21 @@
 import React from 'react';
+import Image from 'next/image'
 import { BrainCircuit, Server, Database, Code, Cloud, Zap } from 'lucide-react';
-
 import ContactForm from './components/contact';
+import { ModalButton } from './components/modal';
 
 const Header = () => (
   <header>
     <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Cloudbend</h1>
+        <Image
+          src="/logo.svg"
+          width={200}
+          height={200}
+          alt="Cloudbend logo"
+        />
         <nav className="space-x-4">
-          <a href="#contact" className="text-white hover:text-gray-900">Contact</a>
+          <a href="#contact" className="text-white hover:text-gray-200">Contact</a>
         </nav>
       </div>
     </div>
@@ -85,17 +91,16 @@ const Capabilities = () => {
 
 const Contact = () => (
   <div id="contact" className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-    <div className="max-w-xl mx-auto">
-      <h2 className="text-3xl font-extrabold text-white text-center mb-8">Contact Us</h2>
+    <ModalButton label="Contact Us">
       <ContactForm />
-    </div>
+    </ModalButton>
   </div>
 );
 
 const Footer = () => (
   <footer className="mt-12">
     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <div className="text-center text-gray-500">
+      <div className="text-center text-white">
         <p>&copy; 2024 Cloudbend. All rights reserved.</p>
       </div>
     </div>
