@@ -14,26 +14,25 @@ const Header = () => (
           height={200}
           alt="Cloudbend logo"
         />
-        <nav className="space-x-4">
-          <a href="#contact" className="text-white hover:text-gray-200">Contact</a>
-        </nav>
+        <div className="space-x-4">
+          <ModalButton label="Contact">
+            <ContactForm />
+          </ModalButton>
+        </div>
       </div>
     </div>
   </header>
 );
 
 const Hero = () => (
-  <div className="container mx-auto px-4 py-16">
-    <div className="max-w-7xl mx-auto py-16 lg:px-8">
+  <div className="container mx-auto px-4 pt-16 pb-8">
+    <div className="max-w-7xl mx-auto pt-16 pb-8 lg:px-8">
       <div className="text-center">
         <h1 className="text-4xl font-extrabold text-white sm:text-5xl sm:tracking-tight lg:text-6xl">
           Bend the cloud to your will
         </h1>
         <p className="mt-4 max-w-3xl mx-auto text-xl text-white">
           Converting problems into solutions and ideas into reality.
-        </p>
-        <p className="mt-4 max-w-3xl mx-auto text-xl text-white">
-          Let us help you build the future.
         </p>
       </div>
     </div>
@@ -90,8 +89,8 @@ const Capabilities = () => {
 };
 
 const Contact = () => (
-  <div id="contact" className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-    <ModalButton label="Contact Us">
+  <div id="contact" className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 flex justify-center">
+    <ModalButton className="bg-white rounded-lg px-4 py-2 text-gray-800" label="Let us help you build the future">
       <ContactForm />
     </ModalButton>
   </div>
