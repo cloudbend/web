@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_DIR=app
+APP_DIR=next
 IAC_DIR=cdk
 
 # app dependencies
@@ -10,4 +10,7 @@ cd -
 
 # iac dependencies
 cd $IAC_DIR
+npm i -g aws-cdk
+pip install pip-tools
+pip install -r requirements.txt
 cd -
