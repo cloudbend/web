@@ -23,19 +23,6 @@ class WebHosting(Construct):
 
         domain_name = "cloudbend.dev"
 
-        # TODO: https://docs.aws.amazon.com/amplify/latest/userguide/server-side-rendering-amplify.html#ssr-IAM-permissions
-
-        # app_role = Role(
-        #     self,
-        #     "AmplifyAppRole",
-        #     assumed_by=ServicePrincipal("amplify.amazonaws.com"),
-        #     description="Custom role permitting Amplify to create required resources for Next SSR app.",
-        # )
-
-        # app_role.add_managed_policy(
-        #     ManagedPolicy.from_aws_managed_policy_name("AdministratorAccess")
-        # )
-
         app = App(
             self,
             "AmplifyApp",
@@ -48,12 +35,26 @@ class WebHosting(Construct):
                     "amplify/github/token"
                 ),
             ),
-            # role=app_role,
             environment_variables={
                 # https://github.com/aws-cloudformation/cloudformation-coverage-roadmap/issues/1299
                 "_CUSTOM_IMAGE": "public.ecr.aws/docker/library/node:22.11.0",
+                # https://docs.aws.amazon.com/amplify/latest/userguide/monorepo-configuration.html#setting-monorepo-environment-variable
+                "AMPLIFY_MONOREPO_APP_ROOT": "next"
             },
         )
+
+        # TODO: https://docs.aws.amazon.com/amplify/latest/userguide/server-side-rendering-amplify.html#ssr-IAM-permissions
+
+        # app_role = Role(
+        #     self,
+        #     "AmplifyAppRole",
+        #     assumed_by=ServicePrincipal("amplify.amazonaws.com"),
+        #     description="Custom role permitting Amplify to create required resources for Next SSR app.",
+        # )
+
+        # app_role.add_managed_policy(
+        #     ManagedPolicy.from_aws_managed_policy_name("AdministratorAccess")
+        # )
 
         branch = app.add_branch(
             "main",
