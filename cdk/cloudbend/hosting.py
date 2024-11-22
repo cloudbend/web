@@ -23,10 +23,24 @@ class WebHosting(Construct):
 
         domain_name = "cloudbend.dev"
 
+        # TODO: https://docs.aws.amazon.com/amplify/latest/userguide/server-side-rendering-amplify.html#ssr-IAM-permissions
+
+        app_role = Role(
+            self,
+            "AmplifyAppRole",
+            assumed_by=ServicePrincipal("amplify.amazonaws.com"),
+            description="Custom role permitting Amplify to create required resources for Next SSR app.",
+        )
+
+        app_role.add_managed_policy(
+            ManagedPolicy.from_aws_managed_policy_name("AdministratorAccess")
+        )
+
         app = App(
             self,
             "AmplifyApp",
             app_name="web",
+            role=app_role,
             platform=Platform.WEB_COMPUTE,
             source_code_provider=GitHubSourceCodeProvider(
                 owner="cloudbend",
@@ -42,19 +56,6 @@ class WebHosting(Construct):
                 "AMPLIFY_MONOREPO_APP_ROOT": "next"
             },
         )
-
-        # TODO: https://docs.aws.amazon.com/amplify/latest/userguide/server-side-rendering-amplify.html#ssr-IAM-permissions
-
-        # app_role = Role(
-        #     self,
-        #     "AmplifyAppRole",
-        #     assumed_by=ServicePrincipal("amplify.amazonaws.com"),
-        #     description="Custom role permitting Amplify to create required resources for Next SSR app.",
-        # )
-
-        # app_role.add_managed_policy(
-        #     ManagedPolicy.from_aws_managed_policy_name("AdministratorAccess")
-        # )
 
         branch = app.add_branch(
             "main",
