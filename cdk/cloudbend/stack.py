@@ -12,8 +12,6 @@ class WebStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, env: Environment):
         super().__init__(scope, construct_id, env=env)
 
-        domain_name = "cloudbend.dev"
-
         dns = PublicHostedZone.from_lookup(
             self,
             "HostedZone",
