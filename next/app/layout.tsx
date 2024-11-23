@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Noto_Sans as NotoSans, Noto_Sans_Mono as NotoSansMono } from "next/font/google";
 import "./globals.css";
 
-const notoSans = NotoSans();
-const notoSansMono = NotoSansMono();
+const notoSans = NotoSans({ subsets: ["latin"] });
+const notoSansMono = NotoSansMono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Cloudbend",
