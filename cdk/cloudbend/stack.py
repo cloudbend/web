@@ -3,6 +3,7 @@ from aws_cdk import Stack, Environment
 from constructs import Construct
 from aws_cdk.aws_route53 import PublicHostedZone
 from aws_cdk.aws_ses import EmailIdentity
+from aws_cdk.aws_events import EventBus
 
 from cloudbend.hosting import WebHosting
 
@@ -24,5 +25,7 @@ class WebStack(Stack):
             "EmailIdentity",
             email_identity_name=dns.zone_name,
         )
+
+        event_bus = EventBus(self, "EventBus")
 
         WebHosting(self, "Hosting", hosted_zone=dns)
