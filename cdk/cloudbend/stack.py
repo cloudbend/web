@@ -13,16 +13,16 @@ class WebStack(Stack):
 
         domain_name = "cloudbend.dev"
 
-        zone = PublicHostedZone.from_lookup(
+        dns = PublicHostedZone.from_lookup(
             self,
             "HostedZone",
-            domain_name=domain_name,
+            domain_name="cloudbend.dev",
         )
 
         email = EmailIdentity.from_email_identity_name(
             self,
             "EmailIdentity",
-            email_identity_name=domain_name,
+            email_identity_name=dns.zone_name,
         )
 
-        WebHosting(self, "Hosting", domain_name=domain_name)
+        WebHosting(self, "Hosting", hosted_zone=dns)

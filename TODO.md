@@ -2,7 +2,6 @@
 - rum
 - contact modal
 - contact email
-- hosting
 - light/dark mode
 - waf
 - cloudtrail

@@ -1,24 +1,23 @@
 from constructs import Construct
 from aws_cdk import SecretValue
+from aws_cdk.aws_route53 import IHostedZone
 from aws_cdk.aws_amplify_alpha import (
     App,
     SubDomain,
     GitHubSourceCodeProvider,
-    CustomRule,
-    RedirectStatus,
     Platform,
 )
 
 
 class WebHosting(Construct):
-    def __init__(self, scope: Construct, construct_id: str, domain_name: str):
+    def __init__(self, scope: Construct, construct_id: str, hosted_zone: IHostedZone):
         super().__init__(scope, construct_id)
 
         app = App(
             self,
             "AmplifyApp",
             app_name="web",
-            platform=Platform.WEB,
+            platform=Platform.WEB,  # ssg
             source_code_provider=GitHubSourceCodeProvider(
                 owner="cloudbend",
                 repository="web",
@@ -38,18 +37,8 @@ class WebHosting(Construct):
         )
 
         app.add_domain(
-            domain_name,
+            hosted_zone.zone_name,
             sub_domains=[
-                SubDomain(branch=branch, prefix=""),
-                SubDomain(branch=branch, prefix="www"),
+                SubDomain(branch=branch, prefix="")
             ],
-        )
-
-        # redirect www to root
-        app.add_custom_rule(
-            CustomRule(
-                source=f"www.{domain_name}",
-                target=f"https://{domain_name}",
-                status=RedirectStatus.PERMANENT_REDIRECT,
-            )
         )
