@@ -11,18 +11,18 @@ class WebStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, env: Environment):
         super().__init__(scope, construct_id, env=env)
 
-        domain = "cloudbend.dev"
+        domain_name = "cloudbend.dev"
 
         zone = PublicHostedZone.from_lookup(
             self,
             "HostedZone",
-            domain_name=domain,
+            domain_name=domain_name,
         )
 
         email = EmailIdentity.from_email_identity_name(
             self,
             "EmailIdentity",
-            email_identity_name=domain,
+            email_identity_name=domain_name,
         )
 
-        WebHosting(self, "Hosting")
+        WebHosting(self, "Hosting", domain_name=domain_name)

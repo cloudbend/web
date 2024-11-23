@@ -3,12 +3,13 @@ frontend:
   phases:
     preBuild:
       commands:
+        - cd next
         - npm ci
     build:
       commands:
         - npm run build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: /next/.next
     files:
       - '**/*'
   cache:

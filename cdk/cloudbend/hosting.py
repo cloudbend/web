@@ -18,21 +18,17 @@ from aws_cdk.aws_amplify_alpha import (
 
 
 class WebHosting(Construct):
-    def __init__(self, scope: Construct, construct_id: str):
+    def __init__(self, scope: Construct, construct_id: str, domain_name: str):
         super().__init__(scope, construct_id)
 
-        domain_name = "cloudbend.dev"
-
-        # TODO: https://docs.aws.amazon.com/amplify/latest/userguide/server-side-rendering-amplify.html#ssr-IAM-permissions
-
-        app_role = Role(
+        service_role = Role(
             self,
-            "AmplifyAppRole",
+            "AmplifyServiceRole",
             assumed_by=ServicePrincipal("amplify.amazonaws.com"),
-            description="Custom role permitting Amplify to create required resources for Next SSR app.",
+            description="Service role permitting Amplify to create required resources for Next SSR app.",
         )
 
-        app_role.add_managed_policy(
+        service_role.add_managed_policy(
             ManagedPolicy.from_aws_managed_policy_name("AdministratorAccess")
         )
 
@@ -40,7 +36,7 @@ class WebHosting(Construct):
             self,
             "AmplifyApp",
             app_name="web",
-            role=app_role,
+            role=service_role,
             platform=Platform.WEB_COMPUTE,
             source_code_provider=GitHubSourceCodeProvider(
                 owner="cloudbend",
@@ -51,9 +47,7 @@ class WebHosting(Construct):
             ),
             environment_variables={
                 # https://github.com/aws-cloudformation/cloudformation-coverage-roadmap/issues/1299
-                "_CUSTOM_IMAGE": "public.ecr.aws/docker/library/node:22.11.0",
-                # https://docs.aws.amazon.com/amplify/latest/userguide/monorepo-configuration.html#setting-monorepo-environment-variable
-                "AMPLIFY_MONOREPO_APP_ROOT": "next"
+                "_CUSTOM_IMAGE": "public.ecr.aws/docker/library/node:22.11.0"
             },
         )
 
