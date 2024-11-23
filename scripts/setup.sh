@@ -5,7 +5,7 @@ IAC_DIR=cdk
 
 # app dependencies
 cd $APP_DIR
-npm i --force
+npm i --force # https://github.com/vercel/next.js/discussions/66259
 cd -
 
 # iac dependencies
