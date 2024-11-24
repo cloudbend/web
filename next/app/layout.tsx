@@ -1,19 +1,18 @@
 import type { Metadata } from "next";
-import { Noto_Sans as NotoSans, Noto_Sans_Mono as NotoSansMono } from "next/font/google";
+import { Noto_Sans as NotoSans } from "next/font/google";
 import "./globals.css";
 
-const notoSans = NotoSans({ subsets: ["latin"] });
-const notoSansMono = NotoSansMono({ subsets: ["latin"] });
+const notoSans = NotoSans({ subsets: ["latin"], fallback: ["sans-serif"] });
 
 export const metadata: Metadata = {
   title: "Cloudbend",
-  description: "Bend the cloud to your will",
+  description: "Let us help you build the future",
 };
 
 const Layout = ({ children }: { children: React.ReactNode }) => (
   <html lang="en">
     <body
-      className={`${notoSans.className} ${notoSansMono.className} antialiased`}
+      className={`${notoSans.className} antialiased`}
     >
       {children}
     </body>

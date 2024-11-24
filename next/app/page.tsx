@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image'
 import { BrainCircuit, Server, Database, Code, Cloud, Zap } from 'lucide-react';
 import ContactForm from './components/contact';
 import { ModalButton } from './components/modal';
@@ -8,7 +7,9 @@ const Header = () => (
   <header>
     <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
       <div className="flex justify-between items-center">
-        <Image
+        {/* next/image causes cls w/ svg src */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src="/logo.svg"
           width={200}
           height={200}
