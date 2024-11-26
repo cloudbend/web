@@ -4,6 +4,8 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
+const API_URL = "https://contact.cloudbend.dev";
+
 const ContactForm = () => {
     const formik = useFormik({
         initialValues: {
@@ -15,7 +17,20 @@ const ContactForm = () => {
             message: Yup.string().required('Required'),
         }),
         onSubmit: (values) => {
-            console.log(values);
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(values),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         },
     });
 

@@ -1,7 +1,8 @@
-- font
 - rum
 - contact modal
 - contact email
 - light/dark mode
 - waf
 - cloudtrail
+- openapi
+- api.cloudbend.dev gateway
