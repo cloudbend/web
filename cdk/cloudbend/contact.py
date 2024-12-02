@@ -51,7 +51,8 @@ class ContactApi(HttpApi):
                 domain_name=domain_name,
             ),
             cors_preflight=CorsPreflightOptions(
-                allow_origins=["http://localhost:3000"],
+                allow_origins=["http://localhost:3000",
+                               "https://cloudbend.dev"],
                 allow_methods=[CorsHttpMethod.POST, CorsHttpMethod.OPTIONS],
                 allow_headers=["Content-Type"],
             ),
