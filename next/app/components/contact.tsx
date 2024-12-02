@@ -30,20 +30,15 @@ const ContactForm = () => {
                 },
                 body: JSON.stringify(values),
             })
-                .then((response) => response.json())
-                .then((_) => {
-                    setSubmitted(true);
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+                .then(() => setSubmitted(true))
+                .catch(console.error);
         },
     });
 
     if (submitted) {
         return (
             <div className="text-center text-gray-800">
-                We've received your message! Expect us to follow up soon.
+                We&apos;ve received your message! Expect us to follow up soon.
             </div>
         );
     }
