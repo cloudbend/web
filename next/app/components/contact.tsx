@@ -1,12 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 const API_URL = "https://contact.cloudbend.dev";
 
+const Spinner = () => (
+    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+);
+
 const ContactForm = () => {
+    const [submitted, setSubmitted] = useState(false);
+
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -25,14 +31,22 @@ const ContactForm = () => {
                 body: JSON.stringify(values),
             })
                 .then((response) => response.json())
-                .then((data) => {
-                    console.log('Success:', data);
+                .then((_) => {
+                    setSubmitted(true);
                 })
                 .catch((error) => {
                     console.error('Error:', error);
                 });
         },
     });
+
+    if (submitted) {
+        return (
+            <div className="text-center text-gray-800">
+                We've received your message! Expect us to follow up soon.
+            </div>
+        );
+    }
 
     return (
         <form onSubmit={formik.handleSubmit}>
@@ -75,7 +89,11 @@ const ContactForm = () => {
                     type="submit"
                     className="w-full flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
-                    Submit
+                    {!formik.isValidating && formik.isSubmitting ? (
+                        <Spinner />
+                    ) : (
+                        'Submit'
+                    )}
                 </button>
             </div>
         </form>
