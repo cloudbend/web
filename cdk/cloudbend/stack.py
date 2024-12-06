@@ -39,4 +39,4 @@ class WebStack(Stack):
             self, "ContactSvc", hosted_zone, certificate, event_bus
         )
 
-        WebHosting(self, "Hosting", hosted_zone)
+        WebHosting(self, "Hosting", hosted_zone, contact_svc.api)

@@ -10,7 +10,6 @@ cd -
 
 # iac dependencies
 cd $IAC_DIR
-npm i -g aws-cdk
 pip install pip-tools
 pip install -r requirements.txt
 cd -

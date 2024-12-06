@@ -1,6 +1,7 @@
 from constructs import Construct
 from aws_cdk import SecretValue
 from aws_cdk.aws_route53 import IHostedZone
+from aws_cdk.aws_apigatewayv2 import IHttpApi
 from aws_cdk.aws_amplify_alpha import (
     App,
     SubDomain,
@@ -10,7 +11,7 @@ from aws_cdk.aws_amplify_alpha import (
 
 
 class WebHosting(Construct):
-    def __init__(self, scope: Construct, construct_id: str, hosted_zone: IHostedZone):
+    def __init__(self, scope: Construct, construct_id: str, hosted_zone: IHostedZone, contact_api: IHttpApi):
         super().__init__(scope, construct_id)
 
         app = App(
@@ -27,7 +28,8 @@ class WebHosting(Construct):
             ),
             environment_variables={
                 # https://github.com/aws-cloudformation/cloudformation-coverage-roadmap/issues/1299
-                "_CUSTOM_IMAGE": "public.ecr.aws/docker/library/node:22.11.0"
+                "_CUSTOM_IMAGE": "public.ecr.aws/docker/library/node:22.11.0",
+                "CONTACT_API_URL": contact_api.url,
             },
         )
 

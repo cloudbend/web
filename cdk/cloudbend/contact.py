@@ -1,9 +1,11 @@
+from pathlib import Path
 from constructs import Construct
+from aws_cdk import Aws, BundlingFileAccess
 from aws_cdk.aws_route53 import IHostedZone, ARecord, RecordTarget
 from aws_cdk.aws_route53_targets import ApiGatewayv2DomainProperties
 from aws_cdk.aws_certificatemanager import ICertificate
 from aws_cdk.aws_logs import LogGroup, RetentionDays
-from aws_cdk.aws_iam import Role, ServicePrincipal
+from aws_cdk.aws_iam import Role, ServicePrincipal, PolicyStatement
 from aws_cdk.aws_apigatewayv2 import (
     HttpApi,
     CorsPreflightOptions,
@@ -21,7 +23,42 @@ from aws_cdk.aws_apigatewayv2 import (
 from aws_cdk.aws_events import IEventBus, EventPattern, Rule, Match
 from aws_cdk.aws_events_targets import (
     CloudWatchLogGroup as CloudWatchLogGroupTarget,
+    LambdaFunction as LambdaFunctionTarget
 )
+from aws_cdk.aws_lambda import Runtime, Architecture, Tracing
+from aws_cdk.aws_lambda_python_alpha import PythonFunction, BundlingOptions
+
+
+FUNCTIONS_DIR = Path(__file__).parent / "functions"
+
+
+class ContactEmailFunction(PythonFunction):
+    def __init__(self, scope: Construct, construct_id: str):
+        entry_path = FUNCTIONS_DIR / "contact_email"
+
+        super().__init__(
+            scope,
+            construct_id,
+            runtime=Runtime.PYTHON_3_12,
+            architecture=Architecture.ARM_64,
+            tracing=Tracing.ACTIVE,
+            entry=str(entry_path),
+            index="app.py",
+            bundling=BundlingOptions(
+                asset_excludes=["tests"],
+                bundling_file_access=BundlingFileAccess.VOLUME_COPY,
+            ),
+            environment={"SOURCE_EMAIL_ADDRESS": "contact@cloudbend.dev",
+                         "DESTINATION_EMAIL_ADDRESS": "help@cloudbend.dev"},
+        )
+
+        self.add_to_role_policy(
+            PolicyStatement(
+                actions=["ses:SendEmail"],
+                resources=[
+                    f"arn:aws:ses:{Aws.REGION}:{Aws.ACCOUNT_ID}:identity/cloudbend.dev"],
+            )
+        )
 
 
 class ContactApi(HttpApi):
@@ -124,6 +161,8 @@ class ContactService(Construct):
             self, "LogGroup", retention=RetentionDays.ONE_MONTH
         )
 
+        email_function = ContactEmailFunction(self, "EmailFn")
+
         Rule(
             self,
             "ContactLogRule",
@@ -133,4 +172,14 @@ class ContactService(Construct):
                 detail_type=Match.prefix("contact.")
             ),
             targets=[CloudWatchLogGroupTarget(log_group)],
+        )
+
+        Rule(
+            self,
+            "ContactEmailRule",
+            event_bus=event_bus,
+            event_pattern=EventPattern(
+                source=["cloudbend"], detail_type=["contact.requested"]
+            ),
+            targets=[LambdaFunctionTarget(email_function)],
         )

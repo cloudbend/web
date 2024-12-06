@@ -1,0 +1,12 @@
+[project]
+name = "cloudbend.contact_email"
+version = "0.0.1"
+authors = [
+  {name = "Josh Wiley", email = "josh@cloudbend.dev"}
+]
+requires-python = ">=3.10,<4"
+dependencies = []
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
