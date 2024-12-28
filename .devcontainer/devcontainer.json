@@ -3,12 +3,6 @@
     "image": "mcr.microsoft.com/devcontainers/base:bullseye",
     "customizations": {
         "vscode": {
-            "settings": {
-                "[python]": {
-                    "editor.defaultFormatter": "ms-python.autopep8",
-                    "editor.formatOnSave": true
-                }
-            },
             "extensions": [
                 "github.copilot",
                 "github.copilot-chat",
@@ -21,6 +15,10 @@
     "mounts": [
         "source=${localEnv:HOME}${localEnv:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached"
     ],
+    "containerEnv": {
+        "CDK_DEFAULT_ACCOUNT": "898546127587",
+        "CDK_DEFAULT_REGION": "us-west-2"
+    },
     "postCreateCommand": "scripts/setup.sh",
     "features": {
         "ghcr.io/devcontainers/features/aws-cli:1": {},
@@ -33,6 +31,6 @@
         "ghcr.io/devcontainers-contrib/features/aws-cdk:2": {
             "version": "2.173.4"
         },
-        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
     }
 }

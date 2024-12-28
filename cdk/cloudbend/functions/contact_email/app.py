@@ -39,5 +39,8 @@ def handler(event, context):
     if source == "cloudbend" and detail_type == "contact.requested":
         contact_requested_handler(event, context)
     else:
-        logger.error(f"Unsupported event source: {
-                     source} and detail type: {detail_type}")
+        logger.error(
+            "Unsupported event source: %s and detail type: %s",
+            source,
+            detail_type
+        )
